@@ -1,67 +1,56 @@
 <!DOCTYPE html>
 <html lang="ko-KR">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Travel Blog</title>
-        <!-- reset.css : meyerweb -->
-		<link rel="stylesheet" href="css/reset.css" />
-		<!-- font : pretendard -->
-		<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/pretendard.css" />
 
-		<link rel="stylesheet" href="css/global.css" />
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AI 기반 블로그 포스트 작성 도우미</title>
+	<script src="css/tailwindcss3_3_3.css"></script>
+</head>
 
-		<!-- layout -->
-		<link rel="stylesheet" href="css/header.css" />
-		<link rel="stylesheet" href="css/footer.css" />
-		<link rel="stylesheet" href="css/about.css" />
-
-		<!-- component -->
-		<link rel="stylesheet" href="css/button.css" />
-		<link rel="stylesheet" href="css/banner.css" />
-		<link rel="stylesheet" href="css/category.css" />
-		<link rel="stylesheet" href="css/author.css" />
-
-		<link rel="stylesheet" href="css/post.css" />
-		<link rel="stylesheet" href="css/posts.css" />
-		<link rel="stylesheet" href="css/main.css" />
-	</head>
-	<body>
-		<!-- header -->
-		<header>
-			<div class="max-width">
-				<h1>
-					<a href="/">
-						<img src="assets/Logo.svg" alt="Travel Blog" />
-					</a>
-				</h1>
+<body class="bg-gray-100">
+	<!-- 네비게이션 바 -->
+	<!-- ... (이전 코드와 동일) ... -->
+		<nav class="bg-blue-500 p-4">
+			<div class="container mx-auto">
+			<div class="flex justify-between items-center">
+				<a href="#" class="text-white font-bold text-xl">AI 블로그 도우미</a>
 			</div>
-		</header>
-		<!--// header -->
-        <!-- banner -->
-		<div class="banner">
-			<div class="max-width">
-				<div class="banner-contents">
-					<p class="sub-text">ChatGPT Blog</p>
-					<p class="main-text">Travel BLOG</p>
-				</div>
 			</div>
+		</nav>
+	<!-- 메인 콘텐츠 -->
+	<div class="container mx-auto mt-8">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+		<div class="p-4">
+			<h1 class="text-4xl font-bold mb-4">AI 기반 블로그 포스트 작성 도우미</h1>
+			<p class="text-gray-700">지금 바로 AI 도우미를 활용하여 효율적이고 놀라운 블로그 포스트를 작성해보세요!</p>
+			<button onclick="loadConversations()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded">시작하기</button>
 		</div>
-		<!-- //banner -->
+		<div>
+			<img src="https://via.placeholder.com/400" alt="AI 도우미 이미지" class="w-full rounded">
+		</div>
+		</div>
+	</div>
 
-		<!-- main -->
-		<main>
-			<!-- posts -->
-			<div class="max-width">
-				<h2 class="a11y-hidden">Post</h2>
-				<ul id="chat-list" class="posts">
-				</ul>
-				<!-- //posts -->
-			</div>
-		</main>
-		<!-- //main -->
-	</body>
+	<!-- 채팅 내역을 표시할 모달 -->
+	<div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+		<div class="bg-white p-8 rounded-lg w-1/2">
+		<h2 class="text-2xl font-bold mb-4" id="modalTitle"></h2>
+		<p><strong>질문:</strong> <span id="modalQuestion"></span></p>
+		<p><strong>답변:</strong> <span id="modalAnswer"></span></p>
+		<hr class="my-4">
+		<button onclick="closeModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">닫기</button>
+		</div>
+	</div>
+
+	<!-- 푸터 -->
+	<footer class="bg-gray-200 p-4 mt-8">
+		<div class="container mx-auto">
+		<p class="text-center text-gray-600">© 2023 AI 블로그 도우미. All rights reserved.</p>
+		</div>
+	</footer>
+
 	<script src="js/main.js"></script>
-	<!-- 추가적인 자바스크립트 라이브러리를 이곳에 추가할 수 있습니다. -->
+</body>
+
 </html>

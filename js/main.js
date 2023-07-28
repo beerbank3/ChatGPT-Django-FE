@@ -5,11 +5,58 @@ const auth_user = () => {
     if (token) {
     } else {
         alert('로그인이 필요한 서비스입니다.')
-        location.href = "/index.html"
+        location.href = "index.html"
     }
 }
 
 auth_user()
+
+async function loadConversations() {
+    try {
+        const response = await fetch(baseUrl + 'chatbot/', {
+            headers: {
+              'Authorization': `token ${token}`, // 토큰 값 추가
+            },
+        });
+        const data = await response.json();
+        const modal = document.getElementById('chatModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalQuestion = document.getElementById('modalQuestion');
+        const modalAnswer = document.getElementById('modalAnswer');
+        
+        modalTitle.textContent = '채팅 내역';
+        modalQuestion.textContent = '';
+        modalAnswer.textContent = '';
+        
+        data.forEach(conversation => {
+            const conversationElement = document.createElement('p');
+            conversationElement.innerHTML = `
+            <a href="#" class="text-blue-500 hover:underline" onclick="openModal('${conversation.question}', '${conversation.answer}')">
+                ${conversation.created_at}
+            </a>
+            `;
+            modalQuestion.appendChild(conversationElement);
+        });
+        
+        modal.classList.remove('hidden');
+        } catch (error) {
+        console.error('Error fetching conversations:', error);
+    }
+}
+  
+function openModal(question, answer) {
+const modalQuestion = document.getElementById('modalQuestion');
+const modalAnswer = document.getElementById('modalAnswer');
+modalQuestion.textContent = question;
+modalAnswer.textContent = answer;
+const modal = document.getElementById('chatModal');
+modal.classList.remove('hidden');
+}
+  
+function closeModal() {
+const modal = document.getElementById('chatModal');
+modal.classList.add('hidden');
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     // 서버에서 데이터를 가져오는 fetch 요청을 보냅니다.
