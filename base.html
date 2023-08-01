@@ -1,56 +1,65 @@
 <!DOCTYPE html>
-<html lang="ko-KR">
-
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>AI 기반 블로그 포스트 작성 도우미</title>
-	<script src="css/tailwindcss3_3_3.css"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 블로그 도우미</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css">
+	<link rel="stylesheet" href="css/scrollbar.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 </head>
-
-<body class="bg-gray-100">
-	<!-- 네비게이션 바 -->
-	<!-- ... (이전 코드와 동일) ... -->
-		<nav class="bg-blue-500 p-4">
-			<div class="container mx-auto">
-			<div class="flex justify-between items-center">
-				<a href="#" class="text-white font-bold text-xl">AI 블로그 도우미</a>
+<body>
+    <!-- 왼쪽 채팅목록 창 -->
+    <div class="flex h-screen bg-gray-100">
+        <div class="bg-white w-1/4 p-4 border-r border-gray-300">
+			<div class="font-bold mb-4">채팅 목록</div>
+			<div class="flex flex-col space-y-2 other-list h-2/3 overflow-y-auto">
+				<!-- 채팅 목록을 반복해서 표시할 수 있습니다. -->
 			</div>
+		</div>
+
+        <!-- 채팅내역 -->
+        <div class="w-3/4 h-screen bg-gray-100">
+            <!-- 상단 바 -->
+            <div class="flex items-center justify-between bg-blue-500 p-4 text-white">
+            <div class="flex items-center">
+                <span class="text-lg font-bold">AI 블로그 도우미</span>
+            </div>
+            <div class="flex items-center">
+                <span class="mr-2">유저 이름</span>
+                <button class="bg-transparent hover:bg-gray-500 py-2 px-3 rounded">
+                    <i class="fas fa-cog text-white"></i>
+                </button>
+                <button class="bg-red-500 hover:bg-red-600 py-2 px-4 ml-2 rounded">로그아웃</button>
+            </div>
+        </div>
+
+            <!-- 채팅창 -->
+            <div class="bg-white p-4 border-t border-gray-300 h-3/4 overflow-y-auto">
+				<!-- 채팅목록 -->
+				<div class="flex flex-col space-y-2 chat-list">
+					<div class="flex items-center">
+						<div class="bg-gray-200 py-2 px-4 rounded ml-auto">
+							안녕하세요! AI 기반 블로그 포스트 작성 도우미입니다.
+						</div>
+						<div class="ml-auto"> <!-- 이 부분이 추가된 부분입니다. -->
+							<button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded deleteButton">
+								전체 삭제
+							</button>
+						</div>
+					</div>
+					<!-- 채팅목록을 반복해서 표시할 수 있습니다. -->
+				</div>
 			</div>
-		</nav>
-	<!-- 메인 콘텐츠 -->
-	<div class="container mx-auto mt-8">
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-		<div class="p-4">
-			<h1 class="text-4xl font-bold mb-4">AI 기반 블로그 포스트 작성 도우미</h1>
-			<p class="text-gray-700">지금 바로 AI 도우미를 활용하여 효율적이고 놀라운 블로그 포스트를 작성해보세요!</p>
-			<button onclick="loadConversations()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded">시작하기</button>
-		</div>
-		<div>
-			<img src="https://via.placeholder.com/400" alt="AI 도우미 이미지" class="w-full rounded">
-		</div>
-		</div>
-	</div>
 
-	<!-- 채팅 내역을 표시할 모달 -->
-	<div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-		<div class="bg-white p-8 rounded-lg w-1/2">
-		<h2 class="text-2xl font-bold mb-4" id="modalTitle"></h2>
-		<p><strong>질문:</strong> <span id="modalQuestion"></span></p>
-		<p><strong>답변:</strong> <span id="modalAnswer"></span></p>
-		<hr class="my-4">
-		<button onclick="closeModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">닫기</button>
-		</div>
-	</div>
-
-	<!-- 푸터 -->
-	<footer class="bg-gray-200 p-4 mt-8">
-		<div class="container mx-auto">
-		<p class="text-center text-gray-600">© 2023 AI 블로그 도우미. All rights reserved.</p>
-		</div>
-	</footer>
-
-	<script src="js/main.js"></script>
+			<!-- 채팅 입력창 -->
+			<div class="flex mt-4">
+				<input type="text" name="prompt" class="flex-grow p-2 border border-gray-400 rounded-l-lg prompt" placeholder="메시지를 입력하세요...">
+				<button onclick='loadConversations()' class="bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-r-lg text-white">보내기</button>
+			</div>
+        </div>
+    </div>
 </body>
-
+<script src="js/main.js"></script>
 </html>

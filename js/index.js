@@ -1,3 +1,4 @@
+// const baseUrl= 'http://3.38.212.163:8000/'
 const baseUrl= 'http://127.0.0.1:8000/'
 function openRegister() {
     document.getElementById("Register").style.display = "block";
@@ -27,6 +28,7 @@ document.getElementById("registerForm").onsubmit = function(event) {
         if ('message' in data) {
             alert(data.message); // 성공 메시지 띄우기
             closeModal();
+            location.href = "./base.html";
         } else if ('error' in data) {
             const errorDiv = document.getElementById("registerErrorDiv");
             errorDiv.innerHTML = `<p style="color: red">${data.error}</p>`; // 에러 메시지 띄우기

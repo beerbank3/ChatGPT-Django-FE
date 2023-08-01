@@ -5,43 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Blog</title>
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/button.css" />
+    <script src="css/tailwindcss3_3_3.css"></script>
     <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-    <div class="button-container">
-        <button onclick="openRegister()" class="button">회원가입</button>
-        <button onclick="openLogin()" class="button">로그인</button>
+    <div class="container mx-auto h-screen flex flex-col justify-center items-center">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold mb-4">AI 기반 블로그 포스트 작성 도우미</h1>
+            <p class="text-gray-700">지금 바로 AI 도우미를 활용하여 효율적이고 놀라운 블로그 포스트를 작성해보세요!</p>
+        </div>
+        <div class="button-container">
+            <button onclick="openRegister()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-4">회원가입</button>
+            <button onclick="openLogin()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">로그인</button>
+        </div>
     </div>
+    <!-- 회원가입 모달 -->
     <div id="Register" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>User Login</h2>
-                <form method="post" action="{% url 'user:register' %}" id="registerForm">
-                    <label for="email">Email:</label>
-                    <input type="text" id="email" name="email"><br>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"><br>
-                    <input type="submit" value="회원가입">
-                </form>
-                <div id="registerErrorDiv"></div>
-            </div>
+        <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="text-center text-2xl font-bold">User Register</h2>
+        <form method="post" action="{% url 'user:register' %}" id="registerForm">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email"><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"><br>
+            <input type="submit" value="회원가입" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        </form>
+        <div id="registerErrorDiv"></div>
         </div>
-        <div id="Login" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>User Login</h2>
-                <form method="post" id="loginForm">
-                    <label for="email">Email:</label>
-                    <input type="text" id="email" name="email"><br>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"><br>
-                    <input type="submit" value="로그인">
-                </form>
-                <div id="loginErrorDiv"></div>
-            </div>
+    </div>
+
+    <!-- 로그인 모달 -->
+    <div id="Login" class="modal">
+        <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="text-center text-2xl font-bold">User Login</h2>
+        <form method="post" id="loginForm">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email"><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"><br>
+            <input type="submit" value="로그인" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        </form>
+        <div id="loginErrorDiv"></div>
         </div>
+    </div>
 </body>
 <script src="js/index.js"></script>
 </html>
