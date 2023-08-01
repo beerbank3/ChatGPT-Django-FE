@@ -2,7 +2,25 @@ const token = sessionStorage.getItem('token');
 const baseUrl= 'http://127.0.0.1:8000/';
 const deleteButton = document.querySelector(".deleteButton");
 const chatList = document.querySelector(".chat-list");
+const $textarea = document.querySelector("textarea");
 
+let Sessiondate = sessionStorage.getItem('date');
+
+$textarea.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px'; // 내용에 맞게 너비 조정
+});
+$textarea.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.shiftKey) {
+        e.preventDefault();
+        console.log("cehclk")
+        $textarea.value += "\n";
+    }
+    else if (e.key === "Enter") {
+        e.preventDefault();
+        loadConversations();
+    }
+});
 const auth_user = () => {
     if (token) {
     } else {
@@ -17,6 +35,7 @@ async function loadConversations() {
     const data = document.querySelector(".prompt").value;
     const formData = new FormData();
     formData.append('prompt', data);
+    formData.append('date',Sessiondate);
     
     fetch(baseUrl + "chatbot/", {
         method: 'POST',
@@ -46,7 +65,7 @@ async function loadConversations() {
 
                     // 질문을 추가합니다.
                     chatList.appendChild(flexContainerQuestion);
-                }else{
+                }else if(conversation.role==="assistant"){
                     // 답변을 위한 flexContainerAnswer를 생성합니다.
                     const flexContainerAnswer = document.createElement("div");
                     flexContainerAnswer.classList.add("flex", "items-center", "justify-end");
@@ -66,34 +85,24 @@ async function loadConversations() {
                     chatList.appendChild(flexContainerAnswer);
                 }
             });
+        $textarea.value = "";
+        chatList.scrollTop = chatList.scrollHeight;
     });
 
 }
 
-  
-function openModal(question, answer) {
-const modalQuestion = document.getElementById('modalQuestion');
-const modalAnswer = document.getElementById('modalAnswer');
-modalQuestion.textContent = question;
-modalAnswer.textContent = answer;
-const modal = document.getElementById('chatModal');
-modal.classList.remove('hidden');
-}
-  
-function closeModal() {
-const modal = document.getElementById('chatModal');
-modal.classList.add('hidden');
-}
-
-document.addEventListener("DOMContentLoaded", function () {
+function mainData(date) {
     // 서버에서 데이터를 가져오는 fetch 요청을 보냅니다.
-    fetch(baseUrl + "chatbot/", {
+    Sessiondate = date;
+    fetch(baseUrl + "chatbot/?date="+date, {
+        method: 'GET',
         headers: {
             "Authorization": `token ${token}`, // YOUR_TOKEN_HERE를 실제 토큰 값으로 대체해야 합니다.
         },
     })
         .then(response => response.json())
         .then(data => {
+            chatList.innerHTML = '';
             data.conversations_today.forEach(conversation => {
                 // 질문을 위한 flexContainerQuestion을 생성합니다.
                 const flexContainerQuestion = document.createElement("div");
@@ -139,36 +148,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 대화 정보를 표시하는 div 엘리먼트를 생성합니다.
                 const divWrapper = document.createElement("div");
                 divWrapper.classList.add("flex", "items-center");
-              
+
                 // 왼쪽 배경 엘리먼트 생성
                 const leftBgDiv = document.createElement("div");
-                leftBgDiv.classList.add("bg-gray-300", "text-white", "py-2", "px-4", "rounded-l-lg");
+                leftBgDiv.classList.add("bg-gray-300", "text-white", "py-2", "px-4", "rounded-l-lg","whitespace-nowrap");
                 leftBgDiv.innerText = `${conversation.date}`;
-              
-              
+
                 // 오른쪽 배경 엘리먼트 생성
                 const rightBgDiv = document.createElement("div");
-                rightBgDiv.classList.add("bg-gray-200", "py-2", "px-4", "rounded-r-lg");
-              
+                rightBgDiv.classList.add("bg-gray-200", "py-2", "px-4", "rounded-r-lg","overflow-hidden","whitespace-nowrap","overflow-ellipsis");
+
                 // 대화 내용 엘리먼트 생성
                 const contentDiv = document.createElement("div");
                 contentDiv.innerHTML = `${conversation.first_question}`;
-              
+
                 // 오른쪽 배경 엘리먼트에 대화 내용 엘리먼트 추가
                 rightBgDiv.appendChild(contentDiv);
-              
+
                 // 생성한 엘리먼트들을 상위 엘리먼트에 추가합니다.
                 divWrapper.appendChild(leftBgDiv);
                 divWrapper.appendChild(rightBgDiv);
-              
+
+                divWrapper.addEventListener("click", () => {
+                    mainData(conversation.date);
+                });
+                divWrapper.addEventListener("mouseover", function () {
+                    divWrapper.style.cursor = "pointer";
+                });
+                divWrapper.addEventListener("mouseout", function () {
+                    divWrapper.style.cursor = "default";
+                });
                 // 기존 요소에 추가합니다.
                 chatOtherList.appendChild(divWrapper);
-              });
+            });
+            chatList.scrollTop = chatList.scrollHeight;
         })
         .catch(error => {
             console.error("Error fetching data:", error);
         });
-});
+}
 
 function logout() {
 
@@ -199,25 +217,26 @@ function logout() {
 
 deleteButton.addEventListener('click', () => {
     // 서버로 보낼 데이터
-    console.log(sessionStorage.getItem('conversations'))
     const data = {
       date: '2023-07-31' // 날짜 데이터를 여기에 넣어주세요.
     };
-  
+
     // fetch를 사용하여 서버로 데이터를 전송
     fetch(baseUrl+'chatbo/', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+        method: 'POST',
+        headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(data => {
       console.log(data); // 서버로부터의 응답을 처리하는 코드
     })
     .catch(error => {
-      console.error('Error:', error);
+        console.error('Error:', error);
     });
-  });
+});
+
+mainData(Sessiondate)

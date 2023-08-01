@@ -27,6 +27,8 @@ document.getElementById("registerForm").onsubmit = function(event) {
     .then(data => {
         if ('message' in data) {
             alert(data.message); // 성공 메시지 띄우기
+            sessionStorage.setItem('token', data['token']);
+            sessionStorage.setItem('date', data['date']);
             closeModal();
             location.href = "./base.html";
         } else if ('error' in data) {
@@ -52,6 +54,7 @@ document.getElementById("loginForm").onsubmit = function(event) {
             // 성공 메시지를 띄우는 경우
             alert('로그인 성공!'); // 또는 서버에서 보내는 메시지 사용 (예: alert(data.message);)
             sessionStorage.setItem('token', data['token']);
+            sessionStorage.setItem('date', data['date']);
             closeModal();
             location.href = "./base.html";
         } else if ('error' in data) {
