@@ -39,14 +39,29 @@ async function loadConversations() {
     formData.append('prompt', data);
     formData.append('date',letdate);
     
-    fetch(baseUrl + "chatbot/", {
-        method: 'POST',
-        headers: {
-            'Authorization': `Token ${token}`,
-        },
-        body:formData,
-    })
-        .then(response => response.json())
+    try{
+        fetch(baseUrl + "chatbot/", {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+            body:formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                if (response.status === 429) {
+                    // 429 에러에 대한 처리
+                    return response.json().then(data => {
+                        alert(data.message);
+                    });
+                } else {
+                    // 다른 상태 코드에 대한 처리
+                    throw new Error('서버에서 오류가 발생했습니다. 상태 코드: ' + response.status);
+                }
+            }
+        })
         .then(data => {
             mainData(letdate)
             data.messages.forEach(conversation => {
@@ -87,10 +102,16 @@ async function loadConversations() {
                     // 답변을 추가합니다.
                     chatList.appendChild(flexContainerAnswer);
                 }
-            });
-        $textarea.value = "";
-        chatList.scrollTop = chatList.scrollHeight;
-    });
+            })
+            $textarea.value = "";
+            chatList.scrollTop = chatList.scrollHeight;
+        }).catch(error => {
+            // Fetch 요청이 실패한 경우 또는 429 에러에 대한 처리
+            console.log("오류가 발생했습니다: " + error.message);
+        });
+    } catch (error) {
+        alert("오류가 발생했습니다!! " + error.message);
+    }
 
 }
 
