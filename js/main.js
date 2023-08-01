@@ -4,7 +4,9 @@ const deleteButton = document.querySelector(".deleteButton");
 const chatList = document.querySelector(".chat-list");
 const $textarea = document.querySelector("textarea");
 
-let Sessiondate = sessionStorage.getItem('date');
+const Sessiondate = sessionStorage.getItem('date');
+
+let letdate = Sessiondate
 
 $textarea.addEventListener('input', function() {
     this.style.height = 'auto';
@@ -35,7 +37,7 @@ async function loadConversations() {
     const data = document.querySelector(".prompt").value;
     const formData = new FormData();
     formData.append('prompt', data);
-    formData.append('date',Sessiondate);
+    formData.append('date',letdate);
     
     fetch(baseUrl + "chatbot/", {
         method: 'POST',
@@ -46,6 +48,7 @@ async function loadConversations() {
     })
         .then(response => response.json())
         .then(data => {
+            mainData(letdate)
             data.messages.forEach(conversation => {
                 // 질문을 위한 flexContainerQuestion을 생성합니다.
                 if(conversation.role==="user"){
@@ -93,7 +96,7 @@ async function loadConversations() {
 
 function mainData(date) {
     // 서버에서 데이터를 가져오는 fetch 요청을 보냅니다.
-    Sessiondate = date;
+    letdate = date;
     fetch(baseUrl + "chatbot/?date="+date, {
         method: 'GET',
         headers: {
@@ -144,6 +147,7 @@ function mainData(date) {
 
             // 다른 날짜의 대화 기록을 화면에 추가합니다.
             const chatOtherList = document.querySelector(".other-list");
+            chatOtherList.innerHTML = '';
             data.conversations_other_dates.forEach(conversation => {
                 // 대화 정보를 표시하는 div 엘리먼트를 생성합니다.
                 const divWrapper = document.createElement("div");
@@ -165,6 +169,13 @@ function mainData(date) {
                 // 오른쪽 배경 엘리먼트에 대화 내용 엘리먼트 추가
                 rightBgDiv.appendChild(contentDiv);
 
+                const deleteButton = document.createElement("div");
+                deleteButton.classList.add("delete-button", "px-3", "py-1", "bg-red-200", "text-white", "rounded-md", "cursor-pointer", "flex", "items-center", "justify-center");
+                deleteButton.innerHTML = `<span class="text-xl font-bold">×</span>`; // Using innerHTML to add an "X" symbol
+                deleteButton.addEventListener("click", () => {
+                    Chatdelete(conversation.date);
+                });
+
                 // 생성한 엘리먼트들을 상위 엘리먼트에 추가합니다.
                 divWrapper.appendChild(leftBgDiv);
                 divWrapper.appendChild(rightBgDiv);
@@ -178,6 +189,8 @@ function mainData(date) {
                 divWrapper.addEventListener("mouseout", function () {
                     divWrapper.style.cursor = "default";
                 });
+
+                divWrapper.appendChild(deleteButton);
                 // 기존 요소에 추가합니다.
                 chatOtherList.appendChild(divWrapper);
             });
@@ -215,28 +228,25 @@ function logout() {
     });
 }
 
-deleteButton.addEventListener('click', () => {
-    // 서버로 보낼 데이터
-    const data = {
-      date: '2023-07-31' // 날짜 데이터를 여기에 넣어주세요.
-    };
+function Chatdelete(date){
+    const formData = new FormData();
+    formData.append('date', date);
 
     // fetch를 사용하여 서버로 데이터를 전송
-    fetch(baseUrl+'chatbo/', {
+    fetch(baseUrl+'chatbot/delete/', {
         method: 'POST',
         headers: {
             'Authorization': `Token ${token}`,
-            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: formData,
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data); // 서버로부터의 응답을 처리하는 코드
+        mainData(Sessiondate)
     })
     .catch(error => {
         console.error('Error:', error);
     });
-});
+};
 
 mainData(Sessiondate)
