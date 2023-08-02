@@ -55,7 +55,6 @@ document.getElementById("loginForm").onsubmit = function(event) {
             alert('로그인 성공!'); // 또는 서버에서 보내는 메시지 사용 (예: alert(data.message);)
             sessionStorage.setItem('token', data['token']);
             sessionStorage.setItem('date', data['date']);
-            sessionStorage.setItem('name', data['name']);
             closeModal();
             location.href = "./base.html";
         } else if ('error' in data) {
