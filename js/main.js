@@ -1,10 +1,13 @@
 const token = sessionStorage.getItem('token');
+const Sessiondate = sessionStorage.getItem('date');
+const name = sessionStorage.getItem('name');
 const baseUrl= 'http://127.0.0.1:8000/';
 const deleteButton = document.querySelector(".deleteButton");
 const chatList = document.querySelector(".chat-list");
 const $textarea = document.querySelector("textarea");
+const spanName = document.querySelector(".name");
 
-const Sessiondate = sessionStorage.getItem('date');
+spanName.textContent = name;
 
 let letdate = Sessiondate
 
