@@ -1,6 +1,6 @@
 const token = sessionStorage.getItem('token');
 const Sessiondate = sessionStorage.getItem('date');
-const baseUrl= 'http://3.38.212.163:8000/'
+const baseUrl= 'https://3.38.212.163/';
 // const baseUrl= 'http://127.0.0.1:8000/';
 const deleteButton = document.querySelector(".deleteButton");
 const chatList = document.querySelector(".chat-list");
