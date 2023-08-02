@@ -1,5 +1,5 @@
-// const baseUrl= 'http://3.38.212.163:8000/'
-const baseUrl= 'http://127.0.0.1:8000/'
+const baseUrl= 'http://3.38.212.163:8000/'
+// const baseUrl= 'http://127.0.0.1:8000/'
 function openRegister() {
     document.getElementById("Register").style.display = "block";
 }
