@@ -6,7 +6,7 @@ const deleteButton = document.querySelector(".deleteButton");
 const chatList = document.querySelector(".chat-list");
 const $textarea = document.querySelector("textarea");
 const spanName = document.querySelector(".name");
-
+const loadingMask = document.querySelector(".loadingMask");
 let letdate = Sessiondate
 
 $textarea.addEventListener('input', function() {
@@ -39,6 +39,7 @@ async function loadConversations() {
     const formData = new FormData();
     formData.append('prompt', data);
     formData.append('date',letdate);
+    loadingMask.classList.remove("hidden");
     
     try{
         fetch(baseUrl + "chatbot/", {
@@ -106,12 +107,15 @@ async function loadConversations() {
             })
             $textarea.value = "";
             chatList.scrollTop = chatList.scrollHeight;
+            loadingMask.classList.add("hidden");
         }).catch(error => {
             // Fetch 요청이 실패한 경우 또는 429 에러에 대한 처리
             console.log("오류가 발생했습니다: " + error.message);
+            loadingMask.classList.add("hidden");
         });
     } catch (error) {
         alert("오류가 발생했습니다!! " + error.message);
+        loadingMask.classList.add("hidden");
     }
 
 }
